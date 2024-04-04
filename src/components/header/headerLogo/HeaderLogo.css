@@ -1,0 +1,37 @@
+.mtc-hd-lg{
+    float: left;
+    height: 100%;
+    width:5rem;
+}
+.mtc-hd-lg-icn{
+    float: left;
+    height: 100%;
+    width: 4.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mtc-hd-logo-img{
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 85%;
+}
+.mtc-hd-lg-txt{
+    display: none;
+    width: 6rem;
+    float: left;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #636578;
+    height: 100%;
+    padding: 0.75rem 0 0.625rem 0;
+}
+@media (min-width: 450px){
+    .mtc-hd-lg-txt{
+        display: block;
+    }
+    .mtc-hd-lg{
+        width:15rem;
+    }
+}

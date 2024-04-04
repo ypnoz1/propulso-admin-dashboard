@@ -1,0 +1,40 @@
+.bx-cont-one{
+    padding:1.25rem;
+}
+.bx-cont-ht{
+    height:3.438rem;
+}
+.bx-cont-one-tl{
+    font-size: 1.1rem;
+    color: #878A99;
+    font-weight: 500;
+}
+.bx-cont-one-tl-nb{
+    padding-top: 0.25rem;
+    font-size: .8rem;
+    color: #878A99;
+}
+.bx-cont-one-numb{
+    font-size: 1.4rem;
+    color:#495057;
+    font-weight: 600;
+}
+.bx-cont-one-icn{
+    height:2.375rem;
+    width: 3.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.box-bg-686EFF{
+    background-color: var(--clr686EFF);
+}
+.box-bg-FDB528{
+    background-color: var(--clrFDB528);
+}
+.box-bg-FF4D49{
+    background-color: var(--clrFF4D49);
+}
+.box-bg-29C7F9{
+    background-color: var(--clr29C7F9);
+}
