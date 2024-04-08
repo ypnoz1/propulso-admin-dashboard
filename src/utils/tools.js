@@ -73,7 +73,7 @@ export const setDataBoxSmDashBoard = (data) => {
         bot: 'box-bdb-FDB528 '
       },{
         name: 'Avg. Visit duration',
-        numBest: `Best: ${visitDurationBest}`,
+        numBest: `Best: ${visitDurationBest.toFixed(2)}`,
         number: visitAverageDuration+" (min)",
         icn: <FontAwesomeIcon icon={faClock} style={{fontSize: "1.4rem"}} />,
         bg: 'box-bg-FF4D49 ',

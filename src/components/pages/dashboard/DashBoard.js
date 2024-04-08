@@ -28,7 +28,6 @@ function DashBoard(){
   const breadcrumb = ['Dashboard'];
   let csvData = useSelector(state => state.csv.data);
   let initialized = useSelector(state => state.initialized.value);
-  let maxMonth = useSelector(state => state.maxMonth.value);
 
   useEffect(() => {
     if(initialized){
@@ -54,7 +53,6 @@ function DashBoard(){
 
         return reader.read().then(processResult);
       }).then(() => {
-        console.log(statsResult);
         csvData = processCsvData(statsResult);
         dispatch(updateCsvData(csvData));
         setIsLoading(false);    
