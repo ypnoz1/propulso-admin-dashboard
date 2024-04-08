@@ -5,7 +5,7 @@ function BoxContentOne({options}){
     <div className={`bx-cont-one`}>
       <div className='bx-cont-ht'>
         <div className='bx-cont-one-tl fltl'>{options?.name ?? ''}</div>
-        <div className='bx-cont-one-tl-nb fltr'>Best: {options?.numBest ?? ''}</div>
+        <div className='bx-cont-one-tl-nb fltr'>{options?.numBest ?? ''}</div>
         <div className='clrboth'></div>
       </div>
       <div className=''>

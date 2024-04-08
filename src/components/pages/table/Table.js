@@ -14,7 +14,7 @@ function Table(){
 
   useEffect(() => {
     if(isLoading){
-      sendRequestByPage();
+      sendRequestByPage(page);
     }
   }, []);
 
@@ -26,18 +26,19 @@ function Table(){
       }else if(numb === 0 && page > 1){
         pg--;
       }
-      setPage(pg);
-      sendRequestByPage();
+      if(pg !== page){
+        sendRequestByPage(pg);   
+      }    
     }
 }
 
-  const pageRange = () => {
-    return [(page - 1) * limitPg, page * limitPg];
+  const pageRange = (pg) => {
+    return [(pg - 1) * limitPg, pg * limitPg];
   }
 
-  const sendRequestByPage = async () => {
+  const sendRequestByPage = async (pg) => {
     setIsLoading(true); 
-    await getMetricsMainStream(pageRange()).then(reader => {
+    await getMetricsMainStream(pageRange(pg)).then(reader => {
       let partialData = '';
       return reader.read().then(function processResult(result) {          
         if(result.done){
@@ -46,7 +47,7 @@ function Table(){
         partialData += new TextDecoder().decode(result.value, { stream: true });
         return reader.read().then(processResult);
       }).then(partialData => {          
-          setTimeout(() => { setIsLoading(false); }, 1000); 
+          setTimeout(() => { setPage(pg); setIsLoading(false); }, 500); 
           try{
             const tab = JSON.parse(partialData);
             setTableData(tab); 

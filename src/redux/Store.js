@@ -10,7 +10,7 @@ const csvSlice = createSlice({
   initialState,
   reducers: {
     updateCsvData: (state, param) => {
-      state.data = [...param.payload];
+      state.data = param.payload;
     }
   }
 });

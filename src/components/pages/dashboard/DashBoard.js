@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getMetricsStream } from '../../../api/MetricApi';
+import { getMetricsStatsStream } from '../../../api/MetricApi';
 import BreadCrumb from '../../breadcrumb/BreadCrumb';
 import ModalLoading from '../../widgets/modal/loading/ModalLoading';
 import LazyLoad from '../lazyload/LazyLoad';
@@ -11,10 +11,7 @@ import { processCsvData,
   formatModalData, 
   covertStreamDataToJson,
   setDataBoxSmDashBoard,
-  getOptionStream,
-  initOptionStream
  } from '../../../utils/tools';
- import { CSV_FILE_PART_OF_MONTH } from '../../../utils/constant';
 import { updateCsvData, updateStatInit } from '../../../../src/redux/Store';
 import './DashBoard.css';
 
@@ -43,37 +40,28 @@ function DashBoard(){
 
   const sendRequestByMonth = async () => {
     const startTimer = Date.now();
-    let optionsStream = initOptionStream();
-    while(optionsStream.monthNumber < (maxMonth + 1)){
-     await getMetricsStream(optionsStream).then(reader => {
-        let partialData = '';
-        return reader.read().then(function processResult(result) {          
-          if(result.done){
-            return partialData;
-          }
-          partialData  += new TextDecoder().decode(result.value, { stream: true });
-          const json    = covertStreamDataToJson(partialData);
-          optionsStream = getOptionStream(json, optionsStream.monthNumber);
-          setModalData(formatModalData(json, startTimer));
+    let statsResult = {};
+    await getMetricsStatsStream().then(reader => {
+      let partialData = '';
+      return reader.read().then(function processResult(result) {          
+        if(result.done){
+          return partialData;
+        }
+        partialData += new TextDecoder().decode(result.value, { stream: true });
+        const json   = covertStreamDataToJson(partialData);
+        statsResult  = new TextDecoder().decode(result.value, { stream: true });
+        setModalData(formatModalData(json, startTimer));
 
-          return reader.read().then(processResult);
-        }).then(() => {
-          csvData = processCsvData(optionsStream.monthNumber, partialData, csvData);
-          dispatch(updateCsvData(csvData));
-          if(optionsStream.monthNumber == maxMonth){ 
-            setIsLoading(false);    
-            dispatch(updateStatInit(true));        
-            setBoxes(setDataBoxSmDashBoard(csvData));
-          }
-        });
-      });      
-      let monthInc = optionsStream.monthNumber + 1;
-      optionsStream = {
-        ...optionsStream,
-        monthNumber: monthInc,
-        maxPartMonth: CSV_FILE_PART_OF_MONTH[monthInc]
-      };
-    }
+        return reader.read().then(processResult);
+      }).then(() => {
+        console.log(statsResult);
+        csvData = processCsvData(statsResult);
+        dispatch(updateCsvData(csvData));
+        setIsLoading(false);    
+        dispatch(updateStatInit(true));        
+        setBoxes(setDataBoxSmDashBoard(csvData));
+      });
+    });    
   }
 
   return (
@@ -102,12 +90,12 @@ function DashBoard(){
               <BoxChartLine optionsChart={{
                 title: 'Average monthly visits duration (min)', 
                 titleElement: 'Minutes', 
-                key: 'visitAvgDuration', 
+                key: 'monthlyDurationRecord', 
                 color: 'rgb(255, 99, 132)'}} /> : 
               <BoxChartBar optionsChart={{
                 title: 'Average monthly speed (Meters/secs)', 
                 titleElement: 'Meters/secs', 
-                key: 'visitAvgSpeed', 
+                key: 'monthlySpeedRecord', 
                 color: 'rgba(53, 162, 235, 0.5)'}} />;
               return (<div className={clss} key={index}>{chart}</div>)
             })}
@@ -117,12 +105,12 @@ function DashBoard(){
               const chart = index === 0 ? 
               <BoxChartLine optionsChart={{title: 'Monthly visits', 
                 titleElement: 'Visits', 
-                key: 'visits', 
+                key: 'monthlyVisitRecord', 
                 color: 'rgb(104, 110, 255)'}} /> : 
               <BoxChartBar optionsChart={{
                 title: 'Monthly visitors', 
                 titleElement: 'Visitors', 
-                key: 'visitors', 
+                key: 'monthlyVisitorRecord', 
                 color: 'rgb(135, 138, 153)'}} />;
               return (<div className={clss} key={index}>{chart}</div>)
             })}

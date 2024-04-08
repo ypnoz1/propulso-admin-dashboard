@@ -45,7 +45,7 @@ function BoxChartLine({optionsChart}){
     datasets: [
       {
         label: optionsChart.titleElement,
-        data: csvData.map(elm => elm[optionsChart.key]),
+        data: csvData[optionsChart.key].map(elm => elm),
         borderColor: optionsChart.color,
         backgroundColor: optionsChart.color,
       }

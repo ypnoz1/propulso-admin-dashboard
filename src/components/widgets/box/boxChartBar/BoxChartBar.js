@@ -43,7 +43,7 @@ function BoxChartBar({optionsChart}){
     datasets: [
       {
         label: optionsChart.titleElement,
-        data: csvData.map(elm => elm[optionsChart.key]),
+        data: csvData[optionsChart.key].map(elm => elm),
         backgroundColor: optionsChart.color,
       }
     ],
